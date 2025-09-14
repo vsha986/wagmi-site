@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WAGMI Coin – We’re All Gonna Make It</title>
+  <meta name="description" content="WAGMI is a community-driven meme coin on BSC. Burnable tokenomics, transparent launch, and good vibes only." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta property="og:title" content="WAGMI Coin" />
+  <meta property="og:description" content="Community-driven meme coin on BSC. We’re all gonna make it." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#1b2559" />
+  <style>
+    :root{--bg:#0b1026;--card:#11183b;--grad1:#1a6cff;--grad2:#864bff;--accent:#ffd64d}
+    html{scroll-behavior:smooth}
+    body{font-family:'Outfit',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    .gradient{background: radial-gradient(1200px 600px at 20% -10%, rgba(134,75,255,.25), transparent 60%),
+               radial-gradient(1000px 500px at 80% -10%, rgba(26,108,255,.22), transparent 60%),
+               linear-gradient(180deg, #0b1026 0%, #0b1026 60%, #0b1026 100%)}
+    .btn{transition:transform .08s ease, box-shadow .2s ease}
+    .btn:active{transform:translateY(1px)}
+    .glass{backdrop-filter:saturate(140%) blur(8px); background:rgba(17,24,59,.55); box-shadow:0 6px 32px rgba(0,0,0,.25)}
+  </style>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { bg:'#0b1026', card:'#11183b', grad1:'#1a6cff', grad2:'#864bff', accent:'#ffd64d' } } }
+    }
+  </script>
+</head>
+<body class="gradient min-h-screen text-white bg-bg">
+  <header class="sticky top-0 z-30 bg-bg/70 backdrop-blur border-b border-white/10">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3 group">
+        <!-- If you upload a logo to assets/logo.png this will show it -->
+        <img src="assets/logo.png" alt="WAGMI logo" class="w-10 h-10 rounded-full border border-white/20 object-cover" />
+        <div>
+          <div class="text-xl font-extrabold tracking-wide">WAGMI</div>
+          <div class="text-xs text-white/70 -mt-1">We’re All Gonna Make It</div>
+        </div>
+      </a>
+      <nav class="hidden md:flex items-center gap-6 text-sm">
+        <a href="#about" class="hover:text-accent">About</a>
+        <a href="#tokenomics" class="hover:text-accent">Tokenomics</a>
+        <a href="#howto" class="hover:text-accent">How to Buy</a>
+        <a href="#roadmap" class="hover:text-accent">Roadmap</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <button id="copyAddr" class="btn px-3 py-2 rounded-xl bg-gradient-to-r from-grad1 to-grad2 text-sm font-semibold shadow-lg hover:shadow-xl">Copy Contract</button>
+        <a id="buyLink" href="#" class="btn px-4 py-2 rounded-xl bg-accent text-black font-bold shadow-lg hover:shadow-xl">Buy on PancakeSwap</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="relative overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 pt-14 pb-16 grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">
+          WAGMI Coin
+          <span class="block text-transparent bg-clip-text bg-gradient-to-r from-grad1 to-grad2">We’re All Gonna Make It</span>
+        </h1>
+        <p class="mt-5 text-white/80 text-lg max-w-prose">A simple, transparent meme coin on BNB Chain (BSC). Burnable supply, no transfer taxes, and community-first vibes. Launch fairly, lock liquidity, and let the memes fly.</p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="#howto" class="btn rounded-xl px-5 py-3 bg-white/10 hover:bg-white/15">How to Buy</a>
+          <button id="openDisclaimer" class="btn rounded-xl px-5 py-3 bg-white/10 hover:bg-white/15">Risk Disclaimer</button>
+        </div>
+        <div class="mt-6 text-sm text-white/60">Contract: <span id="contractText" class="font-mono">0xYOUR_CONTRACT_ADDRESS</span></div>
+      </div>
+      <div class="glass rounded-3xl p-6">
+        <div class="rounded-2xl p-6 bg-gradient-to-br from-[#121a46] to-[#0e1433] border border-white/10">
+          <div class="text-white/70 text-sm">Live Status</div>
+          <div class="mt-2 text-3xl font-extrabold">Community Online</div>
+          <div class="mt-6 grid grid-cols-3 gap-4 text-center">
+            <div class="p-4 rounded-xl bg-white/5">
+              <div class="text-2xl font-bold" id="statHolders">—</div>
+              <div class="text-xs text-white/60">Holders</div>
+            </div>
+            <div class="p-4 rounded-xl bg-white/5">
+              <div class="text-2xl font-bold" id="statSupply">420.69T</div>
+              <div class="text-xs text-white/60">Max Supply</div>
+            </div>
+            <div class="p-4 rounded-xl bg-white/5">
+              <div class="text-2xl font-bold" id="statBurned">—</div>
+              <div class="text-xs text-white/60">Burned</div>
+            </div>
+          </div>
+          <p class="mt-6 text-sm text-white/70">Note: Stats are placeholders. Connect a simple API later (BscScan) to fetch live numbers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="py-16 border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-10 items-start">
+      <div class="space-y-5">
+        <h2 class="text-3xl md:text-4xl font-extrabold">What is WAGMI?</h2>
+        <p class="text-white/80">WAGMI is a meme-coin experiment built for fun and community. It’s a BEP-20 token on BNB Chain with straightforward tokenomics. No reflections, no tricky taxes—just simple transfers and optional burns by any holder.</p>
+        <ul class="text-white/80 list-disc ml-6 space-y-2">
+          <li>Burnable by holders</li>
+          <li>No transfer taxes</li>
+          <li>Liquidity lock recommended at launch</li>
+          <li>Ownership can be renounced for trust (if using admin contract)</li>
+        </ul>
+      </div>
+      <div class="glass rounded-3xl p-6">
+        <h3 class="text-xl font-bold mb-3">Quick Links</h3>
+        <div class="grid sm:grid-cols-2 gap-3 text-sm">
+          <a class="btn bg-white/10 hover:bg-white/15 rounded-xl px-4 py-3" id="scanLink" href="#" target="_blank">View on BscScan</a>
+          <a class="btn bg-white/10 hover:bg-white/15 rounded-xl px-4 py-3" id="cgLink" href="#" target="_blank">CoinGecko (when listed)</a>
+          <a class="btn bg-white/10 hover:bg-white/15 rounded-xl px-4 py-3" id="cmcLink" href="#" target="_blank">CoinMarketCap (when listed)</a>
+          <a class="btn bg-white/10 hover:bg-white/15 rounded-xl px-4 py-3" href="#howto">How to Buy</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tokenomics" class="py-16 border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-8">Tokenomics</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="glass rounded-2xl p-6">
+          <div class="text-sm text-white/60">Ticker</div>
+          <div class="text-2xl font-bold">WAGMI</div>
+        </div>
+        <div class="glass rounded-2xl p-6">
+          <div class="text-sm text-white/60">Chain</div>
+          <div class="text-2xl font-bold">BNB Chain (BSC)</div>
+        </div>
+        <div class="glass rounded-2xl p-6">
+          <div class="text-sm text-white/60">Decimals</div>
+          <div class="text-2xl font-bold">18</div>
+        </div>
+        <div class="glass rounded-2xl p-6 md:col-span-3">
+          <div class="text-sm text-white/60">Max Supply</div>
+          <div class="text-2xl font-bold">420,690,000,000,000 WAGMI</div>
+          <p class="mt-2 text-white/70 text-sm">Distribution example: 80% public liquidity, 10% treasury/marketing, 5% CEX liquidity, 5% airdrops. Adjust to your plan.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="howto" class="py-16 border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-10 items-start">
+      <div>
+        <h2 class="text-3xl md:text-4xl font-extrabold">How to Buy</h2>
+        <ol class="mt-6 space-y-4 text-white/80 list-decimal ml-6">
+          <li>Install MetaMask and switch network to <b>BNB Chain</b>.</li>
+          <li>Fund your wallet with a small amount of <b>BNB</b> for gas.</li>
+          <li>Open PancakeSwap and import the WAGMI contract address.</li>
+          <li>Swap BNB/USDT → WAGMI. Keep slippage low (no taxes).</li>
+          <li>Import the token in MetaMask to see your balance.</li>
+        </ol>
+        <a id="buyLink2" href="#" class="mt-6 inline-block btn px-5 py-3 rounded-xl bg-accent text-black font-bold shadow-lg hover:shadow-xl">Buy on PancakeSwap</a>
+      </div>
+      <div class="glass rounded-3xl p-6">
+        <h3 class="text-xl font-bold mb-3">Trust Checklist</h3>
+        <ul class="space-y-2 text-white/80">
+          <li>✔ Verify source code on BscScan</li>
+          <li>✔ Lock LP tokens for ≥ 6–12 months</li>
+          <li>✔ (If using admin contract) Renounce ownership after launch</li>
+          <li>✔ Publish addresses & treasury wallets</li>
+          <li>✔ Avoid promises of returns; memes only</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="roadmap" class="py-16 border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-8">Roadmap (Meme-map)</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="glass rounded-2xl p-6">
+          <div class="text-accent font-bold">Phase 1</div>
+          <ul class="mt-2 text-white/80 list-disc ml-6">
+            <li>Launch website & socials</li>
+            <li>Fair launch on PancakeSwap</li>
+            <li>LP lock & BscScan verify</li>
+          </ul>
+        </div>
+        <div class="glass rounded-2xl p-6">
+          <div class="text-accent font-bold">Phase 2</div>
+          <ul class="mt-2 text-white/80 list-disc ml-6">
+            <li>CoinGecko / CMC listings</li>
+            <li>Community contests & airdrops</li>
+            <li>Lightweight staking (optional)</li>
+          </ul>
+        </div>
+        <div class="glass rounded-2xl p-6">
+          <div class="text-accent font-bold">Phase 3</div>
+          <ul class="mt-2 text-white/80 list-disc ml-6">
+            <li>Mini-game & tipping bot</li>
+            <li>Partnerships / merch</li>
+            <li>Charity meme fund</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="border-t border-white/10 py-10">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
+      <p class="text-white/60 text-sm">© <span id="year"></span> WAGMI Coin. For entertainment only. Not investment advice.</p>
+      <div class="flex gap-4 text-white/70 text-sm">
+        <a href="#" id="twitterLink" class="hover:text-accent">Twitter/X</a>
+        <a href="#" id="tgLink" class="hover:text-accent">Telegram</a>
+        <a href="#" id="docsLink" class="hover:text-accent">Litepaper</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="disclaimer" class="fixed inset-0 hidden items-center justify-center p-6">
+    <div class="absolute inset-0 bg-black/70"></div>
+    <div class="relative max-w-xl w-full glass rounded-3xl p-6">
+      <div class="flex items-start justify-between gap-6">
+        <h3 class="text-2xl font-bold">Risk Disclaimer</h3>
+        <button id="closeDisclaimer" class="text-white/60 hover:text-white">✕</button>
+      </div>
+      <p class="mt-3 text-white/80 text-sm leading-relaxed">WAGMI is a meme token with no intrinsic financial value or expectation of profit. Do your own research. Crypto assets are volatile; you can lose all of your money. By interacting with the token you accept these risks.</p>
+      <div class="mt-5 flex justify-end">
+        <button id="okDisclaimer" class="btn px-4 py-2 rounded-xl bg-accent text-black font-semibold">I understand</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const CONTRACT = "0xYOUR_CONTRACT_ADDRESS"; // paste deployed address
+  const PANCAKE_URL = `https://pancakeswap.finance/swap?outputCurrency=${CONTRACT}`;
+  const BSCSCAN_URL = `https://bscscan.com/token/${CONTRACT}`;
+  const LINKS = { twitter: "", telegram: "", docs: "" };
+
+  const buyLink = document.getElementById('buyLink');
+  const buyLink2 = document.getElementById('buyLink2');
+  const scanLink = document.getElementById('scanLink');
+  const twitterLink = document.getElementById('twitterLink');
+  const tgLink = document.getElementById('tgLink');
+  const docsLink = document.getElementById('docsLink');
+  const contractText = document.getElementById('contractText');
+
+  contractText.textContent = CONTRACT;
+  if (CONTRACT && CONTRACT !== '0xYOUR_CONTRACT_ADDRESS') {
+    buyLink.href = PANCAKE_URL;
+    buyLink2.href = PANCAKE_URL;
+    scanLink.href = BSCSCAN_URL;
+  }
